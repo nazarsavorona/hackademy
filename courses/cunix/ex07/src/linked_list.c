@@ -5,7 +5,7 @@
 
 node_t  *list_create(void *data) 
 {
-    node_t* node = (node_t*) malloc(sizeof(node_t));
+    node_t *node = (node_t *) malloc(sizeof(node_t));
 
     node->data = data;
     node->next = NULL;
@@ -15,10 +15,11 @@ node_t  *list_create(void *data)
 
 void list_destroy(node_t **head, void (*fp)(void *data))
 {
-    node_t* current = *head;
-    node_t* next = NULL;
+    node_t *current = *head;
+    node_t *next = NULL;
 
-    while (current) {
+    while (current)
+    {
         next = current->next;
 
         fp(current->data);
@@ -30,9 +31,10 @@ void list_destroy(node_t **head, void (*fp)(void *data))
 
 void list_push(node_t *head, void *data)
 {
-    node_t* current = head;
+    node_t *current = head;
 
-    while (current->next) {
+    while (current->next) 
+    {
         current = current->next;
     }
 
@@ -41,7 +43,7 @@ void list_push(node_t *head, void *data)
 
 void list_unshift(node_t **head, void *data)
 {
-    node_t* new_first = list_create(data);
+    node_t *new_first = list_create(data);
     
     new_first->next = (*head)->next;
     
@@ -50,9 +52,9 @@ void list_unshift(node_t **head, void *data)
 
 void *list_pop(node_t **head)
 {
-    node_t* current = *head;
-    node_t* tail;
-    node_t* before_tail;
+    node_t *current = *head;
+    node_t *tail;
+    node_t *before_tail;
 
     while (current->next->next) 
     {
@@ -62,7 +64,7 @@ void *list_pop(node_t **head)
     tail = current->next;
     before_tail = current;
 
-    void* data = tail->data;
+    void *data = tail->data;
 
     free(tail);
     before_tail->next = NULL;
@@ -72,8 +74,8 @@ void *list_pop(node_t **head)
 
 void *list_shift(node_t **head)
 {
-    node_t* to_delete = *head;
-    void* data = to_delete->data;
+    node_t *to_delete = *head;
+    void *data = to_delete->data;
 
     *head = to_delete->next;
     free(to_delete);
@@ -83,16 +85,17 @@ void *list_shift(node_t **head)
 
 void *list_remove(node_t **head, int pos)
 {
-    node_t* current = *head;
-    node_t* previous = current; 
+    node_t *current = *head;
+    node_t *previous = current; 
     
-    while (current->next && pos--) {
+    while (current->next && pos--)
+    {
         previous = current;    
         current = current->next;
     }
 
     previous->next = current->next;
-    void* data = current->data;
+    void *data = current->data;
 
     free(current);
 
@@ -103,8 +106,9 @@ void list_print(node_t *head)
 {
     printf("List content:\n");
 
-    while (head) {
-        printf("%s", (char*)head->data);
+    while (head)
+    {
+        printf("%s", (char *)head->data);
 
         head = head->next;
     }
@@ -113,7 +117,8 @@ void list_print(node_t *head)
 
 void list_visitor(node_t *head, void (*fp)(void *data))
 {
-    while (head) {
+    while (head)
+    {
         fp(head->data);
 
         head = head->next;

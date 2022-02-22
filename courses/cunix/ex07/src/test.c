@@ -7,7 +7,7 @@
 
 void printInt(void *data)
 {
-  printf("%s\n", data);
+  printf("%p\n", data);
 }
 
 void test_destroy_push(void *data)
@@ -98,7 +98,7 @@ int test_unshift()
     list_unshift(&head, str);
   }
 
-  asprintf(&str, "Test unshift: ok");
+  asprintf(&str, "Test unshift: ok\n");
   list_unshift(&head, str);
   list_print(head);
   list_destroy(&head, &test_destroy_push);
@@ -114,14 +114,14 @@ int test_pop()
   asprintf(&str, "head");
   head = list_create(str);
 
-  asprintf(&str, "Test pop: fail");
-  list_push(head, str);
-
   asprintf(&str, "Test pop: ok");
   list_push(head, str);
 
-  free(list_pop(&head));
+  asprintf(&str, "Test pop: fail");
+  list_push(head, str);
 
+  free(list_pop(&head));
+  list_print(head);
   list_destroy(&head, &test_destroy_push);
 
   return 0;
@@ -138,7 +138,8 @@ int test_shift()
   list_push(head, str);
 
   free(list_shift(&head));
-  free(list_shift(&head));
+
+  list_print(head);
 
   list_destroy(&head, &test_destroy_push);
 
@@ -166,6 +167,8 @@ int test_remove()
 
   free(list_remove(&head, 3));
 
+  list_print(head);
+
   list_destroy(&head, &test_destroy_push);
 
   return 0;
@@ -190,28 +193,28 @@ int test_global()
   node_t *head;
   char   *str;
 
-  asprintf(&str, "Test global: ok");
+  int n = 10;
+
+  asprintf(&str, "Test global: ok\n");
   head = list_create(str);
 
 
-  for(int i = 0; i < 10000; i++)
+  for(int i = 0; i < n; i++)
   {
-    asprintf(&str, "Unshifting %d", i);
+    asprintf(&str, "Unshifting %d\n", i);
     list_unshift(&head, str);
   }
 
-
-  for(int i = 0; i < 10000; i++)
+list_print(head);
+  for(int i = 0; i < n; i++)
   {
-    asprintf(&str, "Pushing");
+    asprintf(&str, "Pushing %d\n", i);
     list_push(head, str);
   }
-
-  for(int i = 0; i < 10000; i++)
+  
+  for(int i = 0; i < n; i++)  {
     free(list_pop(&head));
-
-  for(int i = 0; i < 10000; i++)
-    free(list_shift(&head));
+  }
 
   list_destroy(&head, &test_destroy_push);
 
